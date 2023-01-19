@@ -1,4 +1,4 @@
-# Core Production Infrastructure on AWS with Terraform
+# HashiCorp Terraform and Boundary on Amazon Web Services (AWS)
 
 This repo sets up an infrastructure AWS, using [HashiCorp Terraform](), consisting of various server groups, a load balancer, a virtual private network, and all other connecting pieces to simulate a "production like" environment.  Additionally, this infrastructure includes [HashiCorp Boundary]() in order to securely connect to the servers within the network.
 
