@@ -61,14 +61,14 @@ variable "boundary_addr" {
   type = string
 }
 
-variable "auth_method_id" {
+variable "boundary_auth_method_id" {
   type = string
 }
 
-variable "password_auth_method_login_name" {
+variable "boundary_password_auth_method_login_name" {
   type = string
 }
 
-variable "password_auth_method_password" {
+variable "boundary_password_auth_method_password" {
   type = string
 }

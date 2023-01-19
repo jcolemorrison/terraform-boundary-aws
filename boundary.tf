@@ -23,7 +23,7 @@ resource "boundary_host_catalog_static" "production" {
 resource "boundary_host_static" "app_server_one" {
   name            = "server_one"
   description     = "One of the app servers"
-  address         = aws_instance.server.private_ip
+  address         = aws_instance.server.public_ip
   host_catalog_id = boundary_host_catalog_static.production.id
 }
 
@@ -59,7 +59,7 @@ resource "boundary_account_password" "user_account" {
   name           = "generic_user_account"
   description    = "Generic User password account"
   type           = "password"
-  login_name     = "generic_user"
+  login_name     = "genericuser" # must be all lower case alphanumeric and hyphens or periods
   password       = "hilarious"
   auth_method_id = boundary_auth_method.password.id
 }
