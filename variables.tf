@@ -44,6 +44,11 @@ variable "ec2_key_pair_name" {
   type        = string
 }
 
+variable "alt_ec2_key_pair_name" {
+  description = "An alternative existing EC2 key pair used to access the servers."
+  type        = string
+}
+
 variable "public_service_name" {
   description = "The name of the example public facing application."
   type = string

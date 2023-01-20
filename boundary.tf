@@ -27,12 +27,21 @@ resource "boundary_host_static" "app_server_one" {
   host_catalog_id = boundary_host_catalog_static.production.id
 }
 
+resource "boundary_host_static" "app_server_two" {
+  name            = "server_two"
+  description     = "One of two of the app servers"
+  address         = aws_instance.alt_server.public_ip
+  host_catalog_id = boundary_host_catalog_static.production.id
+}
+
+
 resource "boundary_host_set_static" "app_servers" {
   name            = "app_servers"
   description     = "Host set for the app servers"
   host_catalog_id = boundary_host_catalog_static.production.id
   host_ids = [
-      boundary_host_static.app_server_one.id
+      boundary_host_static.app_server_one.id,
+      boundary_host_static.app_server_two.id
   ]
 }
 
