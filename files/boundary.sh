@@ -23,6 +23,7 @@ listener "tcp" {
 worker {
   public_addr = "${WORKER_PUBLIC_IP}"
   auth_storage_path = "/home/ubuntu/boundary/worker1"
+  controller_generated_activation_token = "${CONTROLLER_TOKEN}"
   tags {
     type = ["worker", "dev"]
   }

@@ -100,3 +100,9 @@ resource "boundary_role" "read-only" {
   ]
   grant_strings   = ["id=*;type=*;actions=read,list"]
 }
+
+resource "boundary_worker" "worker_one" {
+  scope_id = boundary_scope.project.id
+  name = "worker_one"
+  description = "first of the self managed workers"
+}

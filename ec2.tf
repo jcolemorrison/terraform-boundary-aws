@@ -50,5 +50,6 @@ resource "aws_instance" "boundary_worker" {
   user_data = base64encode(templatefile("${path.module}/files/boundary.sh", {
     CLUSTER_ID = var.boundary_cluster_id
     WORKER_PUBLIC_IP = aws_instance.boundary_worker.public_ip
+    CONTROLLER_TOKEN = boundary_worker.worker_one.controller_generated_activation_token
   }))
 }
