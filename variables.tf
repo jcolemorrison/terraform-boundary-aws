@@ -66,6 +66,10 @@ variable "boundary_addr" {
   type = string
 }
 
+variable "boundary_cluster_id" {
+  type = string
+}
+
 variable "boundary_auth_method_id" {
   type = string
 }
