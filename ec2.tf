@@ -36,6 +36,15 @@ resource "aws_instance" "alt_server" {
   }))
 }
 
+# The Boundary Worker Elastic IP
+resource "aws_eip" "nat" {
+  vpc = true
+
+  tags = { "Name" = "${local.project_tag}-nat-eip" }
+
+  depends_on = [aws_internet_gateway.igw]
+}
+
 resource "aws_instance" "boundary_worker" {
   # count = 3 # Use the count meta-argument to make many
   ami                         = data.aws_ssm_parameter.ubuntu_1804_ami_id.value

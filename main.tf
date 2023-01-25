@@ -7,7 +7,7 @@ terraform {
     }
     boundary = {
       source  = "hashicorp/boundary"
-      version = "1.0.7"
+      version = "1.1.3"
     }
   }
 }
