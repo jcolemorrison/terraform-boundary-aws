@@ -23,9 +23,8 @@ listener "tcp" {
 worker {
   public_addr = "${WORKER_PUBLIC_IP}"
   auth_storage_path = "/home/ubuntu/boundary/worker1"
-  controller_generated_activation_token = "${CONTROLLER_TOKEN}"
   tags {
-    type = ["worker", "dev"]
+    type = ["private"]
   }
 }
 EOF
@@ -37,7 +36,7 @@ Description=BoundaryWorker
 After=syslog.target network.target
 
 [Service]
-ExecStart=/usr/local/bin/boundary-worker server -config="/home/ubuntu/boundary/pki-worker.hcl"
+ExecStart=/usr/bin/boundary-worker server -config="/home/ubuntu/boundary/pki-worker.hcl"
 ExecStop=/bin/sleep 5
 Restart=always
 

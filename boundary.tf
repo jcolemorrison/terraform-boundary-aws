@@ -22,8 +22,8 @@ resource "boundary_host_catalog_static" "production" {
 
 resource "boundary_host_static" "app_server_one" {
   name            = "server_one"
-  description     = "One of the app servers"
-  address         = aws_instance.server.public_ip
+  description     = "Private app servers"
+  address         = aws_instance.server.private_ip
   host_catalog_id = boundary_host_catalog_static.production.id
 }
 
@@ -40,8 +40,16 @@ resource "boundary_host_set_static" "app_servers" {
   description     = "Host set for the app servers"
   host_catalog_id = boundary_host_catalog_static.production.id
   host_ids = [
-      boundary_host_static.app_server_one.id,
       boundary_host_static.app_server_two.id
+  ]
+}
+
+resource "boundary_host_set_static" "app_servers_private" {
+  name            = "app_servers_private"
+  description     = "Host set for the private app servers"
+  host_catalog_id = boundary_host_catalog_static.production.id
+  host_ids = [
+      boundary_host_static.app_server_one.id
   ]
 }
 
@@ -55,6 +63,19 @@ resource "boundary_target" "app_server" {
   host_source_ids = [
     boundary_host_set_static.app_servers.id
   ]
+}
+
+resource "boundary_target" "app_server_private" {
+  type                     = "tcp"
+  name                     = "app_server_private"
+  description              = "an instance of a private app server accessed via SSH"
+  scope_id                 = boundary_scope.project.id
+  session_connection_limit = -1
+  default_port             = 22
+  host_source_ids = [
+    boundary_host_set_static.app_servers_private.id
+  ]
+  worker_filter = "\"worker\" in \"/tags/type\""
 }
 
 resource "boundary_auth_method" "password" {
@@ -101,8 +122,13 @@ resource "boundary_role" "read-only" {
   grant_strings   = ["id=*;type=*;actions=read,list"]
 }
 
+resource "random_id" "boundary_worker_token" {
+  byte_length = 8
+}
+
 resource "boundary_worker" "worker_one" {
   scope_id = boundary_scope.project.id
   name = "worker_one"
   description = "first of the self managed workers"
+  # worker_generated_auth_token = random_id.boundary_worker_token.id
 }

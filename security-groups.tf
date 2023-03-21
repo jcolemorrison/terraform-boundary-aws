@@ -100,6 +100,16 @@ resource "aws_security_group" "private" {
   vpc_id      = aws_vpc.main.id
 }
 
+resource "aws_security_group_rule" "private_allow_22" {
+  security_group_id = aws_security_group.private.id
+  type              = "ingress"
+  protocol          = "tcp"
+  from_port         = 22
+  to_port           = 22
+  source_security_group_id = aws_security_group.boundary.id
+  description       = "Allow SSH traffic from Boundary Workers."
+}
+
 resource "aws_security_group_rule" "private_lb_allow_9090" {
   security_group_id = aws_security_group.private.id
   type = "ingress"
@@ -120,7 +130,7 @@ resource "aws_security_group_rule" "private_allow_outbound" {
   description       = "Allow any outbound traffic."
 }
 
-## Private Server Security Group
+## Boundary Worker Security Group
 resource "aws_security_group" "boundary" {
   name_prefix = "${local.project_tag}-boundary"
   description = "Security Group for the boundary servers"
@@ -135,6 +145,16 @@ resource "aws_security_group_rule" "boundary_allow_9202" {
   to_port = 9202
   cidr_blocks = ["0.0.0.0/0"]
   description = "Allow traffic from Boundary Cluster."
+}
+
+resource "aws_security_group_rule" "boundary_allow_22" {
+  security_group_id = aws_security_group.boundary.id
+  type              = "ingress"
+  protocol          = "tcp"
+  from_port         = 22
+  to_port           = 22
+  cidr_blocks       = ["0.0.0.0/0"]
+  description       = "Allow SSH traffic"
 }
 
 resource "aws_security_group_rule" "boundary_allow_outbound" {
